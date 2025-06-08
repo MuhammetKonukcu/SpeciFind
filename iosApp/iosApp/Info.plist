@@ -4,5 +4,17 @@
 <dict>
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
+	<key>NSAppTransportSecurity</key>
+    	<dict>
+    	    <key>NSAllowsArbitraryLoads</key>
+    	    <true/>
+    	</dict>
+	<array>
+        <key>CFBundleLocalizations</key>
+        <array>
+            <string>en</string>
+            <string>tr</string>
+        </array>
+    </array>
 </dict>
 </plist>
