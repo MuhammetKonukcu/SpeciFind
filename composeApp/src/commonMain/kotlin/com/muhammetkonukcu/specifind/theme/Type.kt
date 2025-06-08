@@ -6,14 +6,14 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
-import headlinr.composeapp.generated.resources.Res
-import headlinr.composeapp.generated.resources.inter_bold
-import headlinr.composeapp.generated.resources.inter_light
-import headlinr.composeapp.generated.resources.inter_medium
-import headlinr.composeapp.generated.resources.inter_regular
-import headlinr.composeapp.generated.resources.inter_thin
-import headlinr.composeapp.generated.resources.inter_semibold
-import headlinr.composeapp.generated.resources.inter_extrabold
+import specifind.composeapp.generated.resources.Res
+import specifind.composeapp.generated.resources.inter_bold
+import specifind.composeapp.generated.resources.inter_light
+import specifind.composeapp.generated.resources.inter_medium
+import specifind.composeapp.generated.resources.inter_regular
+import specifind.composeapp.generated.resources.inter_thin
+import specifind.composeapp.generated.resources.inter_semibold
+import specifind.composeapp.generated.resources.inter_extrabold
 import org.jetbrains.compose.resources.Font
 
 @Composable

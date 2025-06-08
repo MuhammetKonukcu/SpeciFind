@@ -3,6 +3,7 @@ package com.muhammetkonukcu.specifind.lang
 import android.content.Context
 import android.os.Build
 import android.os.LocaleList
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
