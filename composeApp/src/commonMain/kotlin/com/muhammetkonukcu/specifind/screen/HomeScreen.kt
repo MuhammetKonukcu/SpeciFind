@@ -80,7 +80,7 @@ fun HomeScreen() {
     val viewModel = koinViewModel<HomeViewModel>()
     val uiState by viewModel.uiState.collectAsState()
 
-    Scaffold(bottomBar = { BottomBar(modifier = Modifier) }) {
+    Scaffold(bottomBar = { BottomBar(modifier = Modifier, viewModel = viewModel) }) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -164,7 +164,7 @@ fun HomeScreen() {
                 )
                 Spacer(Modifier.height(12.dp))
 
-                OptionDropdownMenu(
+                OptionDropdownMenuWithPair(
                     label = stringResource(Res.string.search_category),
                     options = GetSearchCategories(),
                     selectedOption = uiState.searchCategory,
@@ -293,7 +293,7 @@ private fun OptionDropdownMenu(
 }
 
 @Composable
-private fun OptionDropdownMenu(
+private fun OptionDropdownMenuWithPair(
     label: String,
     options: List<Pair<String, String>>,
     selectedOption: String,
@@ -376,12 +376,14 @@ private fun OptionDropdownMenu(
 }
 
 @Composable
-private fun BottomBar(modifier: Modifier = Modifier) {
+private fun BottomBar(modifier: Modifier = Modifier, viewModel: HomeViewModel) {
+    val isEnabled = viewModel.uiState.collectAsState().value.keyword.isNotBlank()
     Row(modifier = modifier.fillMaxWidth().padding(horizontal = 12.dp, vertical = 4.dp)) {
         BottomButton(
             modifier = Modifier.weight(1f),
             label = stringResource(Res.string.clear),
             colors = GetClearButtonColors(),
+            isEnabled = isEnabled,
             onClick = {
 
             }
@@ -393,6 +395,7 @@ private fun BottomBar(modifier: Modifier = Modifier) {
             modifier = Modifier.weight(1f),
             label = stringResource(Res.string.search),
             colors = GetSearchButtonColors(),
+            isEnabled = isEnabled,
             onClick = {
 
             }
@@ -405,11 +408,13 @@ private inline fun BottomButton(
     modifier: Modifier,
     label: String,
     colors: ButtonColors,
+    isEnabled: Boolean,
     crossinline onClick: () -> Unit
 ) {
     TextButton(
         modifier = modifier,
         colors = colors,
+        enabled = isEnabled,
         onClick = { onClick.invoke() }
     ) {
         Text(
@@ -425,7 +430,9 @@ private inline fun BottomButton(
 private fun GetClearButtonColors(): ButtonColors {
     val colors = ButtonDefaults.buttonColors().copy(
         containerColor = MaterialTheme.colorScheme.secondary,
-        contentColor = MaterialTheme.colorScheme.background
+        contentColor = MaterialTheme.colorScheme.background,
+        disabledContainerColor = MaterialTheme.colorScheme.secondary.copy(alpha = 0.5f),
+        disabledContentColor = MaterialTheme.colorScheme.background
     )
     return colors
 }
@@ -434,7 +441,9 @@ private fun GetClearButtonColors(): ButtonColors {
 private fun GetSearchButtonColors(): ButtonColors {
     val colors = ButtonDefaults.buttonColors().copy(
         containerColor = Blue500,
-        contentColor = White
+        contentColor = White,
+        disabledContainerColor = Blue500.copy(alpha = 0.5f),
+        disabledContentColor = White
     )
     return colors
 }
