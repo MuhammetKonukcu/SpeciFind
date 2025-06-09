@@ -293,6 +293,89 @@ private fun OptionDropdownMenu(
 }
 
 @Composable
+private fun OptionDropdownMenu(
+    label: String,
+    options: List<Pair<String, String>>,
+    selectedOption: String,
+    onOptionSelected: (String) -> Unit,
+    placeholder: String,
+    modifier: Modifier = Modifier
+) {
+    var expanded by remember { mutableStateOf(false) }
+    var textFieldSize by remember { mutableStateOf(Size.Zero) }
+
+    Column(modifier = modifier) {
+        Text(
+            text = label,
+            style = MaterialTheme.typography.bodyLarge,
+            color = MaterialTheme.colorScheme.primary
+        )
+
+        Spacer(Modifier.height(4.dp))
+
+        OutlinedTextField(
+            value = selectedOption,
+            onValueChange = { /* read-only */ },
+            placeholder = {
+                val textColor =
+                    if (placeholder == stringResource(Res.string.unspecified))
+                        MaterialTheme.colorScheme.tertiary
+                    else MaterialTheme.colorScheme.primary
+                Text(
+                    text = placeholder,
+                    style = MaterialTheme.typography.labelMedium,
+                    color = textColor
+                )
+            },
+            readOnly = true,
+            singleLine = true,
+            textStyle = MaterialTheme.typography.bodyMedium,
+            trailingIcon = {
+                Icon(
+                    imageVector = if (expanded) vectorResource(Res.drawable.ph_caret_up_fill) else vectorResource(
+                        Res.drawable.ph_caret_down_fill
+                    ),
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.tertiary
+                )
+            },
+            modifier = Modifier
+                .fillMaxWidth()
+                .onGloballyPositioned { coords ->
+                    textFieldSize = coords.size.toSize()
+                }
+                .clickable { expanded = !expanded },
+            colors = GetTextFieldColors(),
+            enabled = false
+        )
+
+        DropdownMenu(
+            expanded = expanded,
+            onDismissRequest = { expanded = false },
+            containerColor = MaterialTheme.colorScheme.onBackground,
+            modifier = Modifier
+                .width(with(LocalDensity.current) { textFieldSize.width.toDp() })
+        ) {
+            options.forEachIndexed { index, option ->
+                DropdownMenuItem(
+                    contentPadding = PaddingValues(horizontal = 12.dp),
+                    text = {
+                        Text(
+                            text = option.first,
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.primary
+                        )
+                    },
+                    onClick = {
+                        if (index == 0) onOptionSelected("") else onOptionSelected(option.second)
+                        expanded = false
+                    })
+            }
+        }
+    }
+}
+
+@Composable
 private fun BottomBar(modifier: Modifier = Modifier) {
     Row(modifier = modifier.fillMaxWidth().padding(horizontal = 12.dp, vertical = 4.dp)) {
         BottomButton(
@@ -384,15 +467,15 @@ private fun GetLanguages(): List<String> {
 }
 
 @Composable
-private fun GetSearchCategories(): List<String> {
+private fun GetSearchCategories(): List<Pair<String, String>> {
     return listOf(
-        stringResource(Res.string.unspecified),
-        stringResource(Res.string.search_type_web),
-        stringResource(Res.string.search_type_images),
-        stringResource(Res.string.search_type_news),
-        stringResource(Res.string.search_type_video),
-        stringResource(Res.string.search_type_books),
-        stringResource(Res.string.search_type_maps)
+        stringResource(Res.string.unspecified) to "",
+        stringResource(Res.string.search_type_web) to "web",
+        stringResource(Res.string.search_type_images) to "image",
+        stringResource(Res.string.search_type_news) to "news",
+        stringResource(Res.string.search_type_video) to "video",
+        stringResource(Res.string.search_type_books) to "books",
+        stringResource(Res.string.search_type_maps) to "maps"
     )
 }
 
