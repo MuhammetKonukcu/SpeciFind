@@ -76,17 +76,19 @@ class HomeViewModel : ViewModel() {
 
         // 5) language
         state.language.takeIf { it.isNotBlank() }?.let {
-            parts += "language:${it}"
+            parts += "lang:${it}"
         }
 
         // 6) category (searchType)
         state.searchCategory.takeIf { it.isNotBlank() }?.let {
-            parts += "searchType=${it.lowercase()}"
+            //It doesn't work on search engines. TODO(revisit later)
+            //parts += "searchType=${it.lowercase()}"
         }
 
         // 7) safe search
         if (state.safeSearchEnabled) {
-            parts += "safe=active"
+            //It doesn't work on search engines. TODO(revisit later)
+            //parts += "safe=active"
         }
 
         return parts.joinToString(separator = " ")
