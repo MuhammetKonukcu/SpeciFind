@@ -43,4 +43,52 @@ class HomeViewModel : ViewModel() {
     fun onSearchCategoryChange(new: String) {
         _uiState.update { it.copy(searchCategory = new) }
     }
+
+    fun buildQuery(): String {
+        val state = _uiState.value
+        val parts = mutableListOf<String>()
+
+        // 1) Required: keyword (must not be blank)
+        state.keyword.takeIf { it.isNotBlank() }?.let {
+            parts += it.trim()
+        } ?: run {
+            return ""
+        }
+
+        // 2) site:
+        state.sites.takeIf { it.isNotBlank() }?.let {
+            it.split(',').map(String::trim).filter(String::isNotEmpty).forEach { site ->
+                parts += "site:${site.lowercase()}"
+            }
+        }
+
+        // 3) exclude sites (using -site:)
+        state.excludedSites.takeIf { it.isNotBlank() }?.let {
+            it.split(',').map(String::trim).filter(String::isNotEmpty).forEach { site ->
+                parts += "-site:${site.lowercase()}"
+            }
+        }
+
+        // 4) fileType
+        state.fileType.takeIf { it.isNotBlank() }?.let {
+            parts += "filetype:${it.lowercase()}"
+        }
+
+        // 5) language
+        state.language.takeIf { it.isNotBlank() }?.let {
+            parts += "language:${it}"
+        }
+
+        // 6) category (searchType)
+        state.searchCategory.takeIf { it.isNotBlank() }?.let {
+            parts += "searchType=${it.lowercase()}"
+        }
+
+        // 7) safe search
+        if (state.safeSearchEnabled) {
+            parts += "safe=active"
+        }
+
+        return parts.joinToString(separator = " ")
+    }
 }
