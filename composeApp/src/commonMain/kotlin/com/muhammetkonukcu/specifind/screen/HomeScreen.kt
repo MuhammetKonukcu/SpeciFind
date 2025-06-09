@@ -39,9 +39,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.toSize
+import com.muhammetkonukcu.specifind.model.HomeUiState
 import com.muhammetkonukcu.specifind.theme.Blue500
 import com.muhammetkonukcu.specifind.theme.White
 import com.muhammetkonukcu.specifind.viewmodel.HomeViewModel
@@ -377,15 +379,17 @@ private fun OptionDropdownMenuWithPair(
 
 @Composable
 private fun BottomBar(modifier: Modifier = Modifier, viewModel: HomeViewModel) {
-    val isEnabled = viewModel.uiState.collectAsState().value.keyword.isNotBlank()
+    val isClearBtnEnabled = viewModel.uiState.collectAsState().value != HomeUiState()
+    val isSearchBtnEnabled = viewModel.uiState.collectAsState().value.keyword.isNotBlank()
+    val uriHandler = LocalUriHandler.current
     Row(modifier = modifier.fillMaxWidth().padding(horizontal = 12.dp, vertical = 4.dp)) {
         BottomButton(
             modifier = Modifier.weight(1f),
             label = stringResource(Res.string.clear),
             colors = GetClearButtonColors(),
-            isEnabled = isEnabled,
+            isEnabled = isClearBtnEnabled,
             onClick = {
-
+                viewModel.clearUiState()
             }
         )
 
@@ -395,9 +399,10 @@ private fun BottomBar(modifier: Modifier = Modifier, viewModel: HomeViewModel) {
             modifier = Modifier.weight(1f),
             label = stringResource(Res.string.search),
             colors = GetSearchButtonColors(),
-            isEnabled = isEnabled,
+            isEnabled = isSearchBtnEnabled,
             onClick = {
-
+                val query = viewModel.buildQuery()
+                uriHandler.openUri("https://www.google.com/search?q=$query")
             }
         )
     }

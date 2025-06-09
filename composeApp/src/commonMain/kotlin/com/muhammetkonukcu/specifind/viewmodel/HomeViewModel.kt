@@ -93,4 +93,8 @@ class HomeViewModel : ViewModel() {
 
         return parts.joinToString(separator = " ")
     }
+
+    fun clearUiState() {
+        _uiState.value = HomeUiState()
+    }
 }
