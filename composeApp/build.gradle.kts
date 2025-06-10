@@ -55,7 +55,7 @@ kotlin {
             //Paging3 appCash
             implementation(libs.paging.compose.common)
             implementation(libs.paging.common)
-            //implementation(libs.androidx.paging.runtime.ktx)
+            implementation(libs.androidx.paging.runtime.ktx)
 
             //Room
             implementation(libs.room.runtime)
