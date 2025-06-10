@@ -5,6 +5,7 @@
     <string name="past_queries">Geçmiş Sorgular</string>
     <string name="clear">Temizle</string>
     <string name="search">Ara</string>
+    <string name="delete_query">Sorguyu Sil</string>
     <string name="keyword">Anahtar Kelime</string>
     <string name="site">Site</string>
     <string name="file_type">Dosya Türü</string>
