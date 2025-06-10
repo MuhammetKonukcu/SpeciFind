@@ -1,13 +1,17 @@
 package com.muhammetkonukcu.specifind.viewmodel
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.muhammetkonukcu.specifind.model.HomeUiState
+import com.muhammetkonukcu.specifind.room.entity.HistoryEntity
+import com.muhammetkonukcu.specifind.room.repository.HistoryLocalRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 
-class HomeViewModel : ViewModel() {
+class HomeViewModel(val localRepository: HistoryLocalRepository) : ViewModel() {
 
     private val _uiState = MutableStateFlow(HomeUiState())
     val uiState: StateFlow<HomeUiState> = _uiState.asStateFlow()
@@ -91,7 +95,26 @@ class HomeViewModel : ViewModel() {
             //parts += "safe=active"
         }
 
+        saveQueryInHistory(
+            entity = HistoryEntity(
+                id = 0,
+                keyword = state.keyword,
+                safeSearch = state.safeSearchEnabled,
+                site = state.sites.lowercase(),
+                language = state.language.lowercase(),
+                fileType = state.fileType.lowercase(),
+                excludeSite = state.excludedSites.lowercase(),
+                searchCategory = state.searchCategory.lowercase(),
+            )
+        )
+
         return parts.joinToString(separator = " ")
+    }
+
+    private fun saveQueryInHistory(entity: HistoryEntity) {
+        viewModelScope.launch {
+            localRepository.insertQuery(entity)
+        }
     }
 
     fun clearUiState() {
