@@ -4,6 +4,7 @@ import com.muhammetkonukcu.specifind.room.dao.HistoryDao
 import com.muhammetkonukcu.specifind.room.database.AppDatabase
 import com.muhammetkonukcu.specifind.room.repository.HistoryLocalRepository
 import com.muhammetkonukcu.specifind.room.repository.HistoryLocalRepositoryImpl
+import com.muhammetkonukcu.specifind.viewmodel.HistoryViewModel
 import com.muhammetkonukcu.specifind.viewmodel.HomeViewModel
 import org.koin.core.context.startKoin
 import org.koin.core.module.Module
@@ -11,7 +12,8 @@ import org.koin.dsl.KoinAppDeclaration
 import org.koin.dsl.module
 
 fun appModule(): Module = module {
-    single<HomeViewModel> { HomeViewModel() }
+    single<HomeViewModel> { HomeViewModel(get()) }
+    single<HistoryViewModel> { HistoryViewModel(get()) }
 }
 
 expect fun databaseModule(): Module
