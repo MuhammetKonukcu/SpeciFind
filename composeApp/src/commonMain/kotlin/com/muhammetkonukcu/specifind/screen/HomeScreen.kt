@@ -409,7 +409,7 @@ private fun BottomBar(modifier: Modifier = Modifier, viewModel: HomeViewModel) {
 }
 
 @Composable
-private inline fun BottomButton(
+inline fun BottomButton(
     modifier: Modifier,
     label: String,
     colors: ButtonColors,
@@ -432,7 +432,7 @@ private inline fun BottomButton(
 }
 
 @Composable
-private fun GetClearButtonColors(): ButtonColors {
+fun GetClearButtonColors(): ButtonColors {
     val colors = ButtonDefaults.buttonColors().copy(
         containerColor = MaterialTheme.colorScheme.secondary,
         contentColor = MaterialTheme.colorScheme.background,
@@ -443,7 +443,7 @@ private fun GetClearButtonColors(): ButtonColors {
 }
 
 @Composable
-private fun GetSearchButtonColors(): ButtonColors {
+fun GetSearchButtonColors(): ButtonColors {
     val colors = ButtonDefaults.buttonColors().copy(
         containerColor = Blue500,
         contentColor = White,
