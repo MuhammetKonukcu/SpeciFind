@@ -60,11 +60,25 @@ class HomeViewModel(val localRepository: HistoryLocalRepository) : ViewModel() {
         }
 
         // 2) site:
-        state.sites.takeIf { it.isNotBlank() }?.let {
-            it.split(',').map(String::trim).filter(String::isNotEmpty).forEach { site ->
-                parts += "site:${site.lowercase()}"
+        state.sites
+            .takeIf { it.isNotBlank() }
+            ?.split(',')
+            ?.map(String::trim)
+            ?.filter(String::isNotEmpty)
+            ?.map { "site:${it.lowercase()}" }
+            .let { siteClauses ->
+                if (!siteClauses.isNullOrEmpty()) {
+                    parts += if (siteClauses.size == 1) {
+                        siteClauses.first()
+                    } else {
+                        siteClauses.joinToString(
+                            prefix = "(",
+                            separator = " OR ",
+                            postfix = ")"
+                        )
+                    }
+                }
             }
-        }
 
         // 3) exclude sites (using -site:)
         state.excludedSites.takeIf { it.isNotBlank() }?.let {

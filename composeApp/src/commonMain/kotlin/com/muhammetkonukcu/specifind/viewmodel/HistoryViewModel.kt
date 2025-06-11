@@ -41,11 +41,25 @@ class HistoryViewModel(private val localRepo: HistoryLocalRepository) : ViewMode
         }
 
         // 2) site:
-        entity.site.takeIf { !it.isNullOrBlank() }?.let {
-            it.split(',').map(String::trim).filter(String::isNotEmpty).forEach { site ->
-                parts += "site:${site.lowercase()}"
+        entity.site
+            .takeIf { !it.isNullOrBlank() }
+            ?.split(',')
+            ?.map(String::trim)
+            ?.filter(String::isNotEmpty)
+            ?.map { "site:${it.lowercase()}" }
+            .let { siteClauses ->
+                if (!siteClauses.isNullOrEmpty()) {
+                    parts += if (siteClauses.size == 1) {
+                        siteClauses.first()
+                    } else {
+                        siteClauses.joinToString(
+                            prefix = "(",
+                            separator = " OR ",
+                            postfix = ")"
+                        )
+                    }
+                }
             }
-        }
 
         // 3) exclude sites (using -site:)
         entity.excludeSite.takeIf { !it.isNullOrBlank() }?.let {
