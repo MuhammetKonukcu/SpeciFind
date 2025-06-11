@@ -19,8 +19,7 @@ class HistoryViewModel(private val localRepo: HistoryLocalRepository) : ViewMode
                 data.map {
                     it.copy(
                         language = it.language?.uppercase(),
-                        fileType = it.fileType?.replaceFirstChar { it.titlecase() },
-                        searchCategory = it.searchCategory?.replaceFirstChar { it.titlecase() }
+                        fileType = it.fileType?.replaceFirstChar { it.titlecase() }
                     )
                 }
             }

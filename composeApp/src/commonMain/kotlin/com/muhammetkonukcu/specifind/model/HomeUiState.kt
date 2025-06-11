@@ -8,5 +8,5 @@ data class HomeUiState(
     val showMoreOptions: Boolean = false,
     val excludedSites: String = "",
     val language: String = "",
-    val searchCategory: String = ""
+    val searchCategory: Pair<String, String> = Pair("", "")
 )

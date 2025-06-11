@@ -169,7 +169,7 @@ fun HomeScreen() {
                 OptionDropdownMenuWithPair(
                     label = stringResource(Res.string.search_category),
                     options = GetSearchCategories(),
-                    selectedOption = uiState.searchCategory,
+                    selectedOption = uiState.searchCategory.first,
                     onOptionSelected = viewModel::onSearchCategoryChange,
                     placeholder = stringResource(Res.string.unspecified)
                 )
@@ -299,7 +299,7 @@ private fun OptionDropdownMenuWithPair(
     label: String,
     options: List<Pair<String, String>>,
     selectedOption: String,
-    onOptionSelected: (String) -> Unit,
+    onOptionSelected: (Pair<String, String>) -> Unit,
     placeholder: String,
     modifier: Modifier = Modifier
 ) {
@@ -369,7 +369,12 @@ private fun OptionDropdownMenuWithPair(
                         )
                     },
                     onClick = {
-                        if (index == 0) onOptionSelected("") else onOptionSelected(option.second)
+                        if (index == 0) onOptionSelected(Pair("", "")) else onOptionSelected(
+                            Pair(
+                                option.first,
+                                option.second
+                            )
+                        )
                         expanded = false
                     })
             }

@@ -91,9 +91,9 @@ private fun HistoryItem(
             )
         }
 
-        if (!entity.searchCategory.isNullOrBlank()) {
+        if (entity.searchCategory.first.isNotBlank()) {
             Text(
-                text = stringResource(Res.string.search_category) + ": ${entity.searchCategory}",
+                text = stringResource(Res.string.search_category) + ": ${entity.searchCategory.first}",
                 style = MaterialTheme.typography.bodyMedium.copy(fontSize = 16.sp),
                 color = MaterialTheme.colorScheme.primary
             )

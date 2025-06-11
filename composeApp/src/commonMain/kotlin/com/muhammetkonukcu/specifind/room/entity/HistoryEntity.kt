@@ -13,5 +13,5 @@ data class HistoryEntity(
     val language: String? = null,
     val fileType: String? = null,
     val excludeSite: String? = null,
-    val searchCategory: String? = null
+    val searchCategory: Pair<String, String> = "" to ""
 )

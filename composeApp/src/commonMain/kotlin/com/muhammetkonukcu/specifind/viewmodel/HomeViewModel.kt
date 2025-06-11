@@ -44,7 +44,7 @@ class HomeViewModel(val localRepository: HistoryLocalRepository) : ViewModel() {
         _uiState.update { it.copy(language = new) }
     }
 
-    fun onSearchCategoryChange(new: String) {
+    fun onSearchCategoryChange(new: Pair<String, String>) {
         _uiState.update { it.copy(searchCategory = new) }
     }
 
@@ -84,7 +84,7 @@ class HomeViewModel(val localRepository: HistoryLocalRepository) : ViewModel() {
         }
 
         // 6) category (searchType)
-        state.searchCategory.takeIf { it.isNotBlank() }?.let {
+        state.searchCategory.takeIf { it.first.isNotBlank() }?.let {
             //It doesn't work on search engines. TODO(revisit later)
             //parts += "searchType=${it.lowercase()}"
         }
@@ -104,7 +104,7 @@ class HomeViewModel(val localRepository: HistoryLocalRepository) : ViewModel() {
                 language = state.language.lowercase(),
                 fileType = state.fileType.lowercase(),
                 excludeSite = state.excludedSites.lowercase(),
-                searchCategory = state.searchCategory.lowercase(),
+                searchCategory = state.searchCategory,
             )
         )
 
